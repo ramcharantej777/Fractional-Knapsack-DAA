@@ -1,0 +1,55 @@
+﻿# Sample Inputs for Fractional Knapsack Project
+# Format for programmatic input to main.c (stdin):
+#   <capacity>
+#   <number_of_items>
+#   <name> <weight> <value>   (one per line, repeated n times)
+#
+# You can pipe a block into the compiled program, for example:
+#   main.exe < sample_block.txt
+# or copy one of the blocks below (without comment lines).
+
+## Example 1 (from problem statement)
+# Capacity = 50, Items: A(10,60), B(20,100), C(30,120)
+# Expected maximum profit = 240
+50
+3
+A 10 60
+B 20 100
+C 30 120
+
+## Example 2 - All items fit
+# Capacity = 100, Items fit completely
+# Expected maximum profit = 280
+100
+3
+Gold 20 100
+Silver 30 120
+Bronze 10 60
+
+## Example 3 - Fractional selection required
+# Capacity = 15
+# Ratios: X=6, Y=5, Z=4 -> take X fully (10), 5/20 of Y
+# Expected maximum profit = 60 + 25 = 85
+15
+3
+X 10 60
+Y 20 100
+Z 30 120
+
+## Example 4 - Larger dataset
+# Capacity = 60
+# Items chosen to demonstrate sorting by ratio and partial selection
+60
+5
+Item1 10 60
+Item2 20 100
+Item3 30 120
+Item4 15 75
+Item5 25 50
+
+## Example 5 - Single item larger than capacity
+# Capacity = 5, take half of A
+# Expected maximum profit = 50
+5
+1
+A 10 100

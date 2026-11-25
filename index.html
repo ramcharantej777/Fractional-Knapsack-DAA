@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fractional Knapsack Problem Using Greedy Algorithm in C</title>
+  <meta name="description" content="Interactive DAA project demonstrating the Fractional Knapsack problem using a Greedy Algorithm implemented in C." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-mark">FK</span>
+        <span class="brand-text">Fractional Knapsack</span>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <a href="#home">Home</a>
+        <a href="#simulator">Simulator</a>
+        <a href="#visualization">Visualization</a>
+        <a href="#explanation">Explanation</a>
+        <a href="#comparison">Comparison</a>
+        <a href="#performance">Performance</a>
+        <a href="#applications">Applications</a>
+        <a href="#tests">Test Cases</a>
+        <a href="#about">About</a>
+      </nav>
+      <button id="themeToggle" class="btn btn-secondary theme-toggle" type="button" aria-label="Toggle color theme">Toggle Theme</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- SECTION 1: HOME PAGE -->
+    <section id="home" class="section hero">
+      <div class="container hero-grid">
+        <div class="hero-content card">
+          <p class="eyebrow">Design and Analysis of Algorithms (DAA) Project</p>
+          <h1>Fractional Knapsack Problem Using Greedy Algorithm in C</h1>
+          <div class="problem-statement">
+            <h2>Problem Statement</h2>
+            <p>Implement a greedy algorithm to solve the Fractional Knapsack problem. Analyze its performance and discuss how it contrasts with the 0/1 Knapsack problem in terms of complexity and solution approach. Write down real-time scenarios where this problem statement can be applicable.</p>
+          </div>
+          <div class="intro-grid">
+            <article class="info-block">
+              <h3>Introduction to Fractional Knapsack</h3>
+              <p>The Fractional Knapsack problem asks how to maximize total value in a knapsack with limited capacity when items can be broken into fractions. Unlike 0/1 Knapsack, we may take part of an item, making it possible to fill the capacity efficiently based on value density.</p>
+            </article>
+            <article class="info-block">
+              <h3>Introduction to Greedy Algorithm</h3>
+              <p>A greedy algorithm builds a solution step by step by choosing the locally optimal option at each step. For Fractional Knapsack, selecting items in descending order of value-to-weight ratio yields a globally optimal solution.</p>
+            </article>
+          </div>
+          <div class="meta-grid">
+            <article class="info-block">
+              <h3>Project Objectives</h3>
+              <ul>
+                <li>Implement the Fractional Knapsack algorithm in C using a greedy strategy.</li>
+                <li>Demonstrate step-by-step selection, including partial item selection.</li>
+                <li>Analyze time and space complexity and compare with 0/1 Knapsack.</li>
+                <li>Present real-time applications and interactive visualizations.</li>
+              </ul>
+            </article>
+            <article class="info-block">
+              <h3>Technologies Used</h3>
+              <ul class="tech-list">
+                <li><strong>Core Algorithm:</strong> C (GCC)</li>
+                <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+                <li><strong>UI Design:</strong> Modern CSS</li>
+                <li><strong>Charts:</strong> Chart.js</li>
+                <li><strong>Backend Integration:</strong> Local server executing compiled C program (or WebAssembly build of the same C source)</li>
+                <li><strong>Version Control:</strong> Git and GitHub</li>
+                <li><strong>Deployment:</strong> GitHub Pages (frontend)</li>
+              </ul>
+            </article>
+          </div>
+          <div class="hero-actions">
+            <a href="#simulator" class="btn btn-primary" id="startSimulationBtn">Start Simulation</a>
+            <span id="integrationStatus" class="status-pill" aria-live="polite">Detecting C integration…</span>
+          </div>
+        </div>
+        <aside class="hero-side card">
+          <h3>How It Works</h3>
+          <ol class="steps-list">
+            <li>Compute value/weight ratio for each item.</li>
+            <li>Sort items in descending order of ratio.</li>
+            <li>Pick whole items while capacity remains.</li>
+            <li>Take a fraction of the next item if needed.</li>
+            <li>Report maximum profit and selections.</li>
+          </ol>
+          <div class="mini-stats">
+            <div><span class="label">Strategy</span><strong>Greedy</strong></div>
+            <div><span class="label">Overall Time</span><strong>O(n log n)</strong></div>
+            <div><span class="label">Optimal for</span><strong>Fractional Knapsack</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- SECTION 2: FRACTIONAL KNAPSACK SIMULATOR -->
+    <section id="simulator" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Fractional Knapsack Simulator</h2>
+          <p>Enter item details and knapsack capacity. The calculation is performed by the C implementation (via local backend execution of the compiled program, or a WebAssembly build compiled from the same C source when available).</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Inputs</h3>
+            <form id="simulatorForm" novalidate>
+              <div class="form-row">
+                <label for="capacity">Knapsack Capacity</label>
+                <input type="number" id="capacity" name="capacity" min="0" step="any" value="50" required />
+              </div>
+              <div class="form-row form-row-inline">
+                <div>
+                  <label for="numItems">Number of Items</label>
+                  <input type="number" id="numItems" name="numItems" min="1" step="1" value="3" />
+                </div>
+                <div class="align-end">
+                  <button type="button" id="applyCountBtn" class="btn btn-secondary">Apply Count</button>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table class="items-table" aria-label="Items input table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Item Name</th>
+                      <th>Weight</th>
+                      <th>Value</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsBody"></tbody>
+                </table>
+              </div>
+
+              <div class="button-row">
+                <button type="button" id="addItemBtn" class="btn btn-secondary">Add Item</button>
+                <button type="button" id="loadSampleBtn" class="btn btn-secondary">Load Sample Dataset</button>
+                <button type="button" id="resetBtn" class="btn btn-ghost">Reset Inputs</button>
+              </div>
+
+              <div class="button-row primary-row">
+                <button type="submit" id="calculateBtn" class="btn btn-primary">Calculate Maximum Profit</button>
+              </div>
+              <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3>Results (from C Algorithm)</h3>
+            <div id="resultsSummary" class="results-summary muted">
+              Run the simulation to see selected items, fractions, total weight, and maximum profit.
+            </div>
+            <div class="table-wrap">
+              <table class="results-table" aria-label="Simulation results table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Weight</th>
+                    <th>Value</th>
+                    <th>Ratio</th>
+                    <th>Fraction</th>
+                    <th>Weight Taken</th>
+                    <th>Profit Gained</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="resultsBody"></tbody>
+              </table>
+            </div>
+            <details class="output-details">
+              <summary>Raw C Program JSON Output</summary>
+              <pre id="rawOutput" class="code-block">(no output yet)</pre>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: VISUALIZATION -->
+    <section id="visualization" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Visualization</h2>
+          <p>Visual representation of original items, sorted items by value-to-weight ratio, selections, remaining capacity, and total profit.</p>
+        </div>
+
+        <div class="legend card">
+          <span class="legend-item"><span class="dot dot-full"></span> Completely selected (Green)</span>
+          <span class="legend-item"><span class="dot dot-partial"></span> Partially selected (Yellow)</span>
+          <span class="legend-item"><span class="dot dot-none"></span> Not selected (Gray)</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Original Items</h3>
+            <div id="originalItemsView" class="items-view muted">No data yet.</div>
+          </div>
+          <div class="card">
+            <h3>Sorted Items (by Ratio)</h3>
+            <div id="sortedItemsView" class="items-view muted">No data yet.</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:1rem;">
+          <div class="card">
+            <h3>Selection Progress (Animated)</h3>
+            <div id="progressBars" class="progress-bars muted">Run the simulation to animate selections.</div>
+            <div class="capacity-meter">
+              <div class="capacity-labels"><span>Capacity Used</span><span id="capacityUsedLabel">0 / 0</span></div>
+              <div class="meter-track"><div id="capacityMeterFill" class="meter-fill"></div></div>
+              <p class="small">Remaining Capacity: <strong id="remainingCapacityText">-</strong> &nbsp;|&nbsp; Total Profit: <strong id="totalProfitText">-</strong></p>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Charts</h3>
+            <div class="chart-grid">
+              <div class="chart-box"><canvas id="profitChart" aria-label="Profit per item chart" role="img"></canvas></div>
+              <div class="chart-box"><canvas id="ratioChart" aria-label="Value to weight ratio chart" role="img"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: C LANGUAGE IMPLEMENTATION -->
+    <section id="c-implementation" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>C Language Implementation</h2>
+          <p>The core Fractional Knapsack algorithm is implemented in C (<code>main.c</code>) and compiled using GCC. The web UI executes this compiled program via a local backend, or uses a WebAssembly build compiled from the same C source for browser-only deployment.</p>
+        </div>
+        <div class="card">
+          <h3>Program Structure (main.c)</h3>
+          <ul class="check-list">
+            <li><strong>Structure:</strong> <code>Item</code> with item number, name, weight, value, value-to-weight ratio, fraction selected, weight taken, and profit gained.</li>
+            <li><strong>Input:</strong> <code>inputItems()</code> accepts capacity, number of items, names, weights, and values (stdin or interactive mode).</li>
+            <li><strong>Ratios:</strong> <code>calculateRatios()</code> computes value/weight for each item.</li>
+            <li><strong>Sorting:</strong> <code>sortItemsByRatio()</code> sorts items in descending order of ratio (greedy order).</li>
+            <li><strong>Greedy Selection:</strong> <code>fractionalKnapsack()</code> selects whole items when possible and a fraction when remaining capacity is insufficient.</li>
+            <li><strong>Output:</strong> <code>printJsonResults()</code> and <code>displayResults()</code> report selected items, fractions, total weight, and maximum profit.</li>
+            <li><strong>Main:</strong> <code>main()</code> coordinates input, processing, and output.</li>
+          </ul>
+          <h3>Compile &amp; Run (GCC)</h3>
+          <pre class="code-block"># Compile (Windows)
+gcc -O2 -std=c11 -o main.exe main.c
+
+# Compile (Linux/macOS)
+gcc -O2 -std=c11 -o main main.c
+
+# Run with sample input (programmatic mode, outputs JSON to stdout)
+# Example: capacity 50, 3 items
+#   50
+#   3
+#   A 10 60
+#   B 20 100
+#   C 30 120
+
+# Interactive mode
+main.exe --interactive</pre>
+          <p class="small muted">For browser deployment (GitHub Pages), compile the same <code>main.c</code> to WebAssembly using Emscripten (see README/build instructions) so the frontend can execute the C algorithm without a native backend.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: ALGORITHM EXPLANATION -->
+    <section id="explanation" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Algorithm Explanation (Greedy)</h2>
+          <p>Step-by-step explanation of the Fractional Knapsack greedy strategy, with pseudocode and flowchart.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Step-by-Step Process</h3>
+            <ol class="steps-list">
+              <li><strong>Input:</strong> Read capacity <em>W</em>, number of items <em>n</em>, and each item's weight and value.</li>
+              <li><strong>Compute ratios:</strong> For each item, calculate <code>ratio = value / weight</code>.</li>
+              <li><strong>Sort:</strong> Arrange items in descending order of ratio (highest value density first).</li>
+              <li><strong>Initialize:</strong> Set remaining capacity = W and total profit = 0.</li>
+              <li><strong>Greedy selection:</strong> For each item in sorted order:
+                <ul>
+                  <li>If the whole item fits, take it completely (fraction = 1).</li>
+                  <li>Otherwise, take the fraction that fills the remaining capacity and stop.</li>
+                </ul>
+              </li>
+              <li><strong>Output:</strong> Report selected fractions, total weight used, remaining capacity, and maximum profit.</li>
+            </ol>
+            <h3>Why Value-to-Weight Ratio?</h3>
+            <p>The ratio <code>value/weight</code> measures profit per unit of capacity. By always choosing the item with the highest available ratio, we maximize the gain from each unit of knapsack space consumed. Because items are divisible in Fractional Knapsack, this locally optimal choice at every step leads to a globally optimal total profit.</p>
+          </div>
+          <div class="card">
+            <h3>Pseudocode</h3>
+            <pre class="code-block">FractionalKnapsack(items[1..n], W):
+  for i = 1 to n:
+    items[i].ratio = items[i].value / items[i].weight
+    items[i].fraction = 0
+
+  sort items by ratio in descending order
+
+  remaining = W
+  totalProfit = 0
+
+  for i = 1 to n:
+    if remaining == 0: break
+    if items[i].weight <= remaining:
+      items[i].fraction = 1
+      remaining = remaining - items[i].weight
+      totalProfit = totalProfit + items[i].value
+    else:
+      items[i].fraction = remaining / items[i].weight
+      totalProfit = totalProfit + items[i].value * items[i].fraction
+      remaining = 0
+
+  return totalProfit</pre>
+            <h3>Flowchart</h3>
+            <div class="flowchart" aria-label="Algorithm flowchart">
+              <div class="flow-step">Start</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">Input items and capacity W</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">Compute value/weight ratio for each item</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">Sort items by ratio (descending)</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">For each item: take whole if fits, else take fraction</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">Update profit, weight used, remaining capacity</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">Output selections and maximum profit</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">End</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: COMPARISON -->
+    <section id="comparison" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Fractional Knapsack vs 0/1 Knapsack</h2>
+          <p>Comparison of problem characteristics, algorithms, complexity, and applicability.</p>
+        </div>
+        <div class="card table-wrap">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Aspect</th>
+                <th>Fractional Knapsack</th>
+                <th>0/1 Knapsack</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Approach</td><td>Greedy (choose best ratio first)</td><td>Dynamic Programming (or other exact/approx methods)</td></tr>
+              <tr><td>Item Selection</td><td>Can take all, part, or none of an item</td><td>Each item is either taken (1) or not taken (0)</td></tr>
+              <tr><td>Divisibility</td><td>Items are divisible</td><td>Items are indivisible</td></tr>
+              <tr><td>Algorithm</td><td>Sort by value/weight ratio, then select greedily</td><td>DP table based on items and capacity</td></tr>
+              <tr><td>Time Complexity</td><td>Sorting: O(n log n), Selection: O(n), Overall: <strong>O(n log n)</strong></td><td>DP: <strong>O(nW)</strong> (pseudo-polynomial, depends on capacity W)</td></tr>
+              <tr><td>Space Complexity</td><td>O(n) (or O(1) extra beyond input, depending on sort)</td><td>O(nW) for table; optimized to <strong>O(W)</strong> with 1D DP</td></tr>
+              <tr><td>Optimality</td><td>Greedy choice is optimal for fractional case</td><td>Greedy by ratio is not guaranteed optimal; DP gives optimal solution</td></tr>
+              <tr><td>Real-world Applications</td><td>Cargo with divisible goods, resource/budget allocation, fluid or measurable materials</td><td>Project selection, packing discrete objects, portfolio choices with whole units</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card note-card">
+          <h3>Why Greedy Works Here but Not for 0/1 Knapsack</h3>
+          <p>In the <strong>Fractional Knapsack</strong> problem, we can take any fraction of an item, so filling remaining capacity with the highest value-per-unit resource is always safe. Once items are sorted by ratio, no future choice can improve the profit obtained per unit of capacity already used—this exchange argument proves greedy optimality.</p>
+          <p>In the <strong>0/1 Knapsack</strong> problem, items are indivisible. Taking a high-ratio item might consume capacity that prevents a better combination of other whole items. Because local choices can block globally better combinations, a simple greedy strategy by ratio is not guaranteed to be optimal; dynamic programming is used to evaluate combinations optimally.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: PERFORMANCE ANALYSIS -->
+    <section id="performance" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Performance Analysis</h2>
+          <p>Time and space complexity characteristics of the Fractional Knapsack greedy algorithm.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Complexity Summary</h3>
+            <ul class="check-list">
+              <li><strong>Best case:</strong> O(n log n) — dominated by sorting even if selection finishes early in practice; sorting is required to establish greedy order.</li>
+              <li><strong>Average case:</strong> O(n log n) — comparison-based sorting averages O(n log n), selection is O(n).</li>
+              <li><strong>Worst case:</strong> O(n log n) — sorting takes O(n log n) and selection scans up to n items.</li>
+              <li><strong>Overall time complexity:</strong> O(n log n) + O(n) = <strong>O(n log n)</strong>.</li>
+              <li><strong>Space complexity:</strong> O(n) for storing item data (and O(1) or O(log n) auxiliary space depending on sort implementation).</li>
+            </ul>
+            <h3>0/1 Knapsack (for contrast)</h3>
+            <ul class="check-list">
+              <li><strong>Dynamic Programming time:</strong> O(nW)</li>
+              <li><strong>DP space:</strong> O(nW), optimizable to O(W)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Performance Charts</h3>
+            <div class="chart-box chart-box-tall"><canvas id="complexityChart" aria-label="Complexity growth chart" role="img"></canvas></div>
+            <p class="small muted">Illustrative comparison: Fractional Knapsack grows roughly with n log n; 0/1 DP grows with n×W (shown for a representative capacity factor).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 8: REAL-TIME APPLICATIONS -->
+    <section id="applications" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Real-Time Applications</h2>
+          <p>Simplified models where resources can be divided and benefits are proportional to the amount used.</p>
+        </div>
+        <div class="app-grid">
+          <article class="card app-card">
+            <h3>1. Cargo Loading</h3>
+            <p><strong>Scenario:</strong> A truck, ship, or aircraft has limited weight/volume capacity and can carry divisible goods (grain, liquids, sand, fuel).</p>
+            <p><strong>Application:</strong> Treat each cargo type as an item with weight and profit/value. Compute value density and load highest-density goods first; if space remains, load a fraction of the next good to maximize revenue. This assumes goods can be portioned and value scales linearly with quantity.</p>
+          </article>
+          <article class="card app-card">
+            <h3>2. Resource Allocation</h3>
+            <p><strong>Scenario:</strong> Limited resources (time, manpower hours, materials) must be distributed across tasks or projects.</p>
+            <p><strong>Application:</strong> Model tasks as items where "weight" is resource consumed and "value" is expected benefit. Allocate resources to highest benefit-per-unit tasks first, allowing partial allocation when resources are divisible, to maximize overall impact.</p>
+          </article>
+          <article class="card app-card">
+            <h3>3. Budget Allocation</h3>
+            <p><strong>Scenario:</strong> A fixed budget must be split across departments, campaigns, or initiatives.</p>
+            <p><strong>Application:</strong> Each spending option has a cost (weight) and expected return/impact (value). Prioritize options with the best return per dollar and allocate partial funding where feasible to optimize total return under a simplified proportional-benefit assumption.</p>
+          </article>
+          <article class="card app-card">
+            <h3>4. Food Distribution</h3>
+            <p><strong>Scenario:</strong> Limited storage/transport capacity for distributing divisible food supplies (rice, flour, oil) to maximize nutritional or relief value.</p>
+            <p><strong>Application:</strong> Items represent food types with weight/volume and value (nutrition, urgency-weighted benefit). Select and portion supplies by highest value density to serve the most benefit within capacity constraints.</p>
+          </article>
+          <article class="card app-card">
+            <h3>5. Cloud Computing</h3>
+            <p><strong>Scenario:</strong> Allocating limited compute, memory, or bandwidth among jobs/services that can scale.</p>
+            <p><strong>Application:</strong> Treat allocatable units as divisible capacity and workloads as items with resource demand and business value/priority score. Assign resources to highest value-per-unit workloads first, allowing fractional/scaled allocation in elastic environments (simplified model).</p>
+          </article>
+          <article class="card app-card">
+            <h3>6. Investment Allocation</h3>
+            <p><strong>Scenario:</strong> Distributing a fixed amount of capital across divisible investment opportunities.</p>
+            <p><strong>Application:</strong> Model opportunities with required amount (weight) and expected return/risk-adjusted value. Allocate funds to highest return-per-unit investments first, taking partial positions where possible, under the simplified assumption of proportional returns and divisibility.</p>
+          </article>
+        </div>
+        <p class="disclaimer card"><strong>Note:</strong> These are simplified models where resources can be divided and benefits are proportional. Real-world constraints (indivisibility, risk, dependencies, regulations, diminishing returns) may require more complex models such as 0/1 knapsack, integer programming, or portfolio optimization.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 9: SAMPLE TEST CASES -->
+    <section id="tests" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Sample Test Cases</h2>
+          <p>Load predefined datasets into the simulator to verify the C algorithm's behavior and results.</p>
+        </div>
+        <div class="test-grid">
+          <article class="card test-card">
+            <h3>Example 1 (Required)</h3>
+            <p><strong>Capacity:</strong> 50</p>
+            <ul>
+              <li>Item A: Weight = 10, Value = 60</li>
+              <li>Item B: Weight = 20, Value = 100</li>
+              <li>Item C: Weight = 30, Value = 120</li>
+            </ul>
+            <p><strong>Expected maximum profit:</strong> 240</p>
+            <button type="button" class="btn btn-secondary load-test-btn" data-test="1">Load Example 1</button>
+          </article>
+          <article class="card test-card">
+            <h3>Example 2 - All Items Fit</h3>
+            <p><strong>Capacity:</strong> 100</p>
+            <ul>
+              <li>Gold: Weight = 20, Value = 100</li>
+              <li>Silver: Weight = 30, Value = 120</li>
+              <li>Bronze: Weight = 10, Value = 60</li>
+            </ul>
+            <p><strong>Expected maximum profit:</strong> 280</p>
+            <button type="button" class="btn btn-secondary load-test-btn" data-test="2">Load Example 2</button>
+          </article>
+          <article class="card test-card">
+            <h3>Example 3 - Fractional Selection</h3>
+            <p><strong>Capacity:</strong> 15</p>
+            <ul>
+              <li>X: Weight = 10, Value = 60 (ratio 6)</li>
+              <li>Y: Weight = 20, Value = 100 (ratio 5)</li>
+              <li>Z: Weight = 30, Value = 120 (ratio 4)</li>
+            </ul>
+            <p><strong>Expected maximum profit:</strong> 85 (X full, 25% of Y)</p>
+            <button type="button" class="btn btn-secondary load-test-btn" data-test="3">Load Example 3</button>
+          </article>
+          <article class="card test-card">
+            <h3>Example 4 - Larger Dataset</h3>
+            <p><strong>Capacity:</strong> 60</p>
+            <ul>
+              <li>5 items with varied ratios</li>
+              <li>Demonstrates sorting and partial selection</li>
+            </ul>
+            <p><strong>Expected:</strong> Computed by C algorithm (verify in simulator)</p>
+            <button type="button" class="btn btn-secondary load-test-btn" data-test="4">Load Example 4</button>
+          </article>
+          <article class="card test-card">
+            <h3>Example 5 - Single Fractional Item</h3>
+            <p><strong>Capacity:</strong> 5</p>
+            <ul>
+              <li>A: Weight = 10, Value = 100</li>
+            </ul>
+            <p><strong>Expected maximum profit:</strong> 50 (50% of item)</p>
+            <button type="button" class="btn btn-secondary load-test-btn" data-test="5">Load Example 5</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 10: ABOUT PROJECT -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>About the Project</h2>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Problem Statement</h3>
+            <p>Implement a greedy algorithm to solve the Fractional Knapsack problem. Analyze its performance and discuss how it contrasts with the 0/1 Knapsack problem in terms of complexity and solution approach. Write down real-time scenarios where this problem statement can be applicable.</p>
+            <h3>Project Objectives</h3>
+            <ul>
+              <li>Design and implement the Fractional Knapsack algorithm in C.</li>
+              <li>Provide an interactive web interface for simulation and visualization.</li>
+              <li>Explain the greedy strategy, correctness intuition, and complexity.</li>
+              <li>Compare Fractional Knapsack with 0/1 Knapsack and discuss applications.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Algorithm Description</h3>
+            <p>The greedy algorithm computes each item's value-to-weight ratio, sorts items in descending order of that ratio, and fills the knapsack by taking whole items whenever possible and a fraction of the next item when necessary. This yields the maximum total profit for the fractional variant.</p>
+            <h3>Implementation Details</h3>
+            <ul>
+              <li><strong>Core:</strong> C program (<code>main.c</code>) with structures and modular functions, compiled with GCC.</li>
+              <li><strong>Integration:</strong> Local backend executes the compiled C binary and returns its JSON output; browser deployments may use a WebAssembly build compiled from the same C source.</li>
+              <li><strong>Frontend:</strong> HTML/CSS/JavaScript with Chart.js visualizations and responsive UI.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:1rem;">
+          <div class="card">
+            <h3>Results</h3>
+            <p>The simulator correctly computes selected items (full/partial/none), fractions, total weight used, remaining capacity, and maximum profit using the C implementation. Sample test cases, including the required example with capacity 50 and expected profit 240, validate correctness.</p>
+          </div>
+          <div class="card">
+            <h3>Conclusion</h3>
+            <p>The Fractional Knapsack problem demonstrates the power and optimality of greedy algorithms when local choices (highest value density) lead to a global optimum. In contrast, the 0/1 Knapsack's indivisibility constraint requires dynamic programming for guaranteed optimal solutions. Understanding these differences is essential for selecting appropriate algorithmic strategies in real-world resource allocation problems.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>Fractional Knapsack Problem Using Greedy Algorithm in C — DAA Project</p>
+      <p class="small muted">Core algorithm implemented in C. Frontend built with HTML, CSS, JavaScript, and Chart.js.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
